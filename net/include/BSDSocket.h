@@ -67,6 +67,7 @@ struct BSDSocket : public FileHandle
     nsapi_size_or_error_t recv(void *buffer, nsapi_size_t size);
     nsapi_size_or_error_t recvfrom(SocketAddress *address, void *buffer, nsapi_size_t size);
     nsapi_size_or_error_t recvmsg(SocketAddress *address, void *buffer, nsapi_size_t size, nsapi_msghdr_t* control, nsapi_size_t control_size);
+    nsapi_error_t listen(int backlog);
     Socket *accept(nsapi_error_t *error);
     nsapi_size_or_error_t send(const void *data, nsapi_size_t size);
     nsapi_size_or_error_t sendto(const SocketAddress &address, const void *data, nsapi_size_t size);
@@ -107,6 +108,7 @@ private:
     // mark read and write as blocking
     bool set_write_as_blocking(counter_type counter);
     bool set_read_as_blocking(counter_type counter);
+    bool set_read_write_as_blocking(counter_type counter);
 
     void reset_flags();
     bool try_update_flags(flags_type flags, counter_type counter);

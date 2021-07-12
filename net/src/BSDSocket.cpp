@@ -117,6 +117,13 @@ bool BSDSocket::set_read_as_blocking(counter_type counter)
     return try_update_flags(current & ~POLLIN, counter);
 }
 
+bool BSDSocket::set_read_write_as_blocking(counter_type counter)
+{
+    auto current = _flags;
+    return try_update_flags(current & ~(POLLIN | POLLOUT), counter);
+}
+
+
 ssize_t BSDSocket::write(const void * buffer, size_t size)
 {
     // placeholder for the file API
@@ -236,11 +243,20 @@ nsapi_size_or_error_t BSDSocket::recvmsg(SocketAddress *address, void *buffer, n
     return result;
 }
 
+nsapi_error_t BSDSocket::listen(int backlog) {
+    auto counter = get_poll_counter();
+    auto result = getNetSocket()->listen(backlog);
+    if (result == NSAPI_ERROR_OK) { 
+        set_read_write_as_blocking(counter);
+    }
+    return result;
+}
+
 Socket *BSDSocket::accept(nsapi_error_t *error)
 {
     auto counter = get_poll_counter();
     auto result = getNetSocket()->accept(error);
-    if (*error == NSAPI_ERROR_OK) { 
+    if (*error == NSAPI_ERROR_WOULD_BLOCK) { 
         set_read_as_blocking(counter);
     }
     return result;

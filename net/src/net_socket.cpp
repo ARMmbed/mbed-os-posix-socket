@@ -66,7 +66,7 @@ static mbed_socket_option_t convert_socket_option(int level, int optname)
         case SO_BINDTODEVICE: 
             return { NSAPI_SOCKET, NSAPI_BIND_TO_DEVICE };
         default:
-            tr_warning("Passing unknown option %d to socket", optname);
+            tr_warning("Passing unknown socket option %d to socket", optname);
             return { level, optname };
         }        
     } else if (level == IPPROTO_IP) { 
@@ -79,7 +79,7 @@ static mbed_socket_option_t convert_socket_option(int level, int optname)
         case IP_PKTINFO:
             return { NSAPI_SOCKET, NSAPI_PKTINFO };
         default:
-            tr_warning("Passing unknown option %d to socket", optname);
+            tr_warning("Passing unknown IP4 option %d to socket", optname);
             return { level, optname };
         }
     } else if (level == IPPROTO_IPV6) { 
@@ -92,7 +92,7 @@ static mbed_socket_option_t convert_socket_option(int level, int optname)
         case IPV6_PKTINFO:
             return { NSAPI_SOCKET, NSAPI_PKTINFO };
         default:
-            tr_warning("Passing unknown option %d to socket", optname);
+            tr_warning("Passing unknown IP6 option %d to socket", optname);
             return { level, optname };
         }
     } else {
@@ -290,7 +290,7 @@ int mbed_listen(int fd, int backlog)
     }
 
     tr_info("Listen fd %d backlog %d", fd, backlog);
-    auto ret = socket->getNetSocket()->listen(backlog);
+    auto ret = socket->listen(backlog);
     if ((ret != NSAPI_ERROR_OK) && (ret != NSAPI_ERROR_UNSUPPORTED))
     {
         tr_err("Listen failed [%d]", ret);
@@ -329,6 +329,11 @@ int mbed_accept(int fd, struct sockaddr * addr, socklen_t * addrlen)
 
     tr_info("Connection accept for fd %d socket", fd);
     newSocket = socket->accept(&error);
+    if (error == NSAPI_ERROR_WOULD_BLOCK) { 
+        tr_debug("Socket fd %d: Accept would block", fd);
+        set_errno(EWOULDBLOCK);
+        return -1;
+    }
     if ((error != NSAPI_ERROR_OK) && (error != NSAPI_ERROR_UNSUPPORTED))
     {
         tr_err("Accept failed [%d]", error);
@@ -1204,6 +1209,16 @@ int mbed_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfd
                 auto & cb = control_blocks[i];
                 cb.handle->sigio(nullptr);
             }
+
+            // Update output file descriptors
+            for (auto & fds : { readfds, writefds, exceptfds })
+            {
+                if (fds)
+                {
+                    FD_ZERO(fds);
+                }
+            }
+
             return fd_processed;
         }
     }
