@@ -19,7 +19,7 @@
 #define MBED_NET_BSD_SOCKET_H
 
 #include "OpenFileHandleAsFileDescriptor.h"
-#include "common.h"
+#include "net_common.h"
 #include <mstd_atomic>
 #include <netsocket/TCPSocket.h>
 #include <netsocket/UDPSocket.h>

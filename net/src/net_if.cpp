@@ -1,5 +1,5 @@
 #include "net_if.h"
-#include "common.h"
+#include "net_common.h"
 #include <NetworkInterface.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>

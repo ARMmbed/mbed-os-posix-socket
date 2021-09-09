@@ -13,7 +13,7 @@ target_include_directories(mbed-os-posix-socket
 target_sources(mbed-os-posix-socket
     INTERFACE
         net/src/BSDSocket.cpp
-        net/src/common.cpp
+        net/src/net_common.cpp
         net/src/net_dns.cpp
         net/src/net_if.cpp
         net/src/net_socket.cpp
