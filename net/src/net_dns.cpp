@@ -1,5 +1,5 @@
 #include "net_dns.h"
-#include <common.h>
+#include <net_common.h>
 #include <netsocket/NetworkInterface.h>
 
 int mbed_getaddrinfo(const char * nodename, const char * servname, const struct addrinfo * hints, struct addrinfo ** res)

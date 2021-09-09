@@ -1,15 +1,15 @@
-#include <netsocket/MsgHeader.h>
 #include "BSDSocket.h"
 #include "EventFileHandle.h"
 #include "FdControlBlock.h"
 #include "OpenFileHandleAsFileDescriptor.h"
 #include <net_socket.h>
 #include <rtos/EventFlags.h>
+#include <netsocket/MsgHeader.h>
 
 #include <net_if.h>
 #include <ifaddrs.h>
 
-#include "common.h"
+#include "net_common.h"
 
 #include "mbed-trace/mbed_trace.h"
 
