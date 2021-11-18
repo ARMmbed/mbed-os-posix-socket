@@ -22,6 +22,8 @@ extern "C" {
 int convert_bsd_addr_to_mbed(SocketAddress * out, struct sockaddr * in);
 int convert_mbed_addr_to_bsd(struct sockaddr * out, const SocketAddress * in);
 
+NetworkInterface * get_mbed_net_if(void);
+
 #ifdef __cplusplus
 }
 #endif

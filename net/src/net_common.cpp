@@ -1,4 +1,5 @@
 #include "net_common.h"
+#include <NetworkInterface.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -53,4 +54,10 @@ int convert_mbed_addr_to_bsd(struct sockaddr * out, const SocketAddress * in)
     }
 
     return 0;
+}
+
+NetworkInterface * get_mbed_net_if()
+{
+    static NetworkInterface * mbed_net_if = NetworkInterface::get_default_instance();
+    return mbed_net_if;
 }

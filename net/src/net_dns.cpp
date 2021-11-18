@@ -17,7 +17,7 @@ int mbed_getaddrinfo(const char * nodename, const char * servname, const struct 
         return EAI_SYSTEM;
     }
 
-    NetworkInterface * net = NetworkInterface::get_default_instance();
+    NetworkInterface * net = get_mbed_net_if();
     if (net == nullptr)
     {
         set_errno(ENETUNREACH);
