@@ -1,6 +1,9 @@
 #include "net_common.h"
+#include <NetworkInterface.h>
 #include <stdlib.h>
 #include <string.h>
+
+static NetworkInterface * mbed_net_if = nullptr;
 
 int convert_bsd_addr_to_mbed(SocketAddress * out, struct sockaddr * in)
 {
@@ -53,4 +56,13 @@ int convert_mbed_addr_to_bsd(struct sockaddr * out, const SocketAddress * in)
     }
 
     return 0;
+}
+
+NetworkInterface * get_mbed_net_if()
+{
+    if (mbed_net_if == nullptr)
+    {
+        mbed_net_if = NetworkInterface::get_default_instance();
+    }
+    return mbed_net_if;
 }

@@ -17,7 +17,7 @@ struct if_nameindex * mbed_if_nameindex(void)
     unsigned int if_counter        = 0;
     struct if_nameindex * net_list = NULL;
 
-    NetworkInterface * net_if = NetworkInterface::get_default_instance();
+    NetworkInterface * net_if = get_mbed_net_if();
     if (net_if == nullptr)
     {
         set_errno(ENOBUFS);
@@ -210,7 +210,7 @@ int mbed_getifaddrs(struct ifaddrs ** ifap)
 
     *ifap = NULL;
 
-    NetworkInterface * net_if = NetworkInterface::get_default_instance();
+    NetworkInterface * net_if = get_mbed_net_if();
     if (net_if == nullptr)
     {
         set_errno(ENETUNREACH);
@@ -630,7 +630,7 @@ static int mbed_get_if_flags(unsigned int * flags)
     SocketAddress netmask;
     NetworkInterface * net_if;
 
-    net_if = NetworkInterface::get_default_instance();
+    net_if = get_mbed_net_if();
     if (net_if == nullptr)
     {
         set_errno(ENOTTY);

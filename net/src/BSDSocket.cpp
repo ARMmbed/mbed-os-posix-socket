@@ -31,7 +31,7 @@ int BSDSocket::open(int family, int type, InternetSocket * socket)
             return -1;
         };
 
-        if (_socket->open(NetworkInterface::get_default_instance()) != NSAPI_ERROR_OK)
+        if (_socket->open(get_mbed_net_if()) != NSAPI_ERROR_OK)
         {
             close();
             tr_err("Open socket failed");
