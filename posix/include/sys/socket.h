@@ -439,6 +439,9 @@ struct in_pktinfo {
 	struct in_addr	ipi_addr;
 };
 
+// IPv6 recv packet info option
+#define IPV6_RECVPKTINFO 49
+
 // IPv6 packet info option
 #define IPV6_PKTINFO 50
 
