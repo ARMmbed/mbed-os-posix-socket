@@ -89,7 +89,7 @@ static mbed_socket_option_t convert_socket_option(int level, int optname)
             return { NSAPI_SOCKET, NSAPI_ADD_MEMBERSHIP };
         case IPV6_DROP_MEMBERSHIP:
             return { NSAPI_SOCKET, NSAPI_DROP_MEMBERSHIP };
-        case IPV6_PKTINFO:
+        case IPV6_RECVPKTINFO:
             return { NSAPI_SOCKET, NSAPI_PKTINFO };
         default:
             tr_warning("Passing unknown IP6 option %d to socket", optname);
